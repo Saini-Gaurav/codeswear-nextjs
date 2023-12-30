@@ -1,23 +1,29 @@
 import React, { useRef } from "react";
 import { FaCartArrowDown } from "react-icons/fa";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-
 
 const Navbar = () => {
-  const toggleCart = ()=>{
-
-  }  
+  const toggleCart = () => {
+    const cartRef = ref.current;
+    cartRef.classList.toggle("cart-open");
+  };
 
   const ref = useRef();
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <Link href={"/"} legacyBehavior>
-        <a className="navbar-brand" href="#">
-          <Image width={200} height={40} src="/logo.png" alt="Codeswear Logo" />
-        </a>
+          <a className="navbar-brand" href="#">
+            <Image
+              width={200}
+              height={40}
+              src="/logo.png"
+              alt="Codeswear Logo"
+            />
+          </a>
         </Link>
         <button
           className="navbar-toggler"
@@ -80,7 +86,7 @@ const Navbar = () => {
                 </a>
               </Link>
             </li>
-            <li className="nav-item" aria-current="page"> 
+            <li className="nav-item" aria-current="page">
               <Link href={"/stickers"} legacyBehavior>
                 <a className="nav-link">Stickers</a>
               </Link>
@@ -95,14 +101,29 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div className="cart absolute top-2 mx-sm-3 mx-md-4 mx-lg-5 mx-xl-5">
-        <Link href={"/"} className="text-decoration-none">
-          <FaCartArrowDown />
-        </Link>
+
+      {/* Cart Icon */}
+      <div className="cart position-relative">
+        <FaCartArrowDown onClick={toggleCart} />
       </div>
-      <div ref={ref} className="sideCart position-absolute top-0 end-0 bg-pink-100 p-10 transform translate-x-full transition-transform">
-        <h3>Shooping Cart</h3>
-        <span onClick={toggleCart} className="position-absolute top-3 end-1 cursor-pointer"><IoIosCloseCircleOutline /></span>
+
+      {/* Sidebar Shopping Cart */}
+      <div
+        ref={ref}
+        className="sideCart position-absolute top-0 end-0 bg-light p-4"
+      >
+        <h3>Shopping Cart</h3>
+        <span
+          onClick={toggleCart}
+          className="position-absolute top-3 end-1 cursor-pointer"
+        >
+          <IoIosCloseCircleOutline />
+        </span>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">Item 1</li>
+          <li className="list-group-item">Item 2</li>
+          <li className="list-group-item">Item 3</li>
+        </ul>
       </div>
     </nav>
   );
