@@ -5,12 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Navbar = () => {
-  const toggleCart = () => {
-    const cartRef = ref.current;
-    cartRef.classList.toggle("cart-open");
-  };
+  // const toggleCart = () => {
+  //   const cartRef = ref.current;
+  //   cartRef.classList.toggle("cart-open");
+  // };
 
-  const ref = useRef();
+  // const ref = useRef();
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -103,12 +103,16 @@ const Navbar = () => {
       </div>
 
       {/* Cart Icon */}
-      <div className="cart position-relative">
-        <FaCartArrowDown onClick={toggleCart} />
+      <div className="cart">
+        <Link href={"/cart"} legacyBehavior>
+          <a className="nav-link" aria-current="page">
+            <FaCartArrowDown />
+          </a>
+        </Link>
       </div>
 
       {/* Sidebar Shopping Cart */}
-      <div
+      {/* <div
         ref={ref}
         className="sideCart position-absolute top-0 end-0 bg-light p-4"
       >
@@ -124,7 +128,7 @@ const Navbar = () => {
           <li className="list-group-item">Item 2</li>
           <li className="list-group-item">Item 3</li>
         </ul>
-      </div>
+      </div> */}
     </nav>
   );
 };
