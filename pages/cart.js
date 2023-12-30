@@ -1,4 +1,6 @@
 import React from "react";
+import { CiSquarePlus } from "react-icons/ci";
+import { CiSquareMinus } from "react-icons/ci";
 
 const Cart = () => {
   return (
@@ -67,7 +69,7 @@ const Cart = () => {
                         className="btn btn-primary px-3 me-2"
                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
                       >
-                        <i className="fas fa-minus"></i>
+                        <i className="fas fa-minus"><CiSquareMinus /></i>
                       </button>
 
                       <div className="form-outline">
@@ -88,7 +90,7 @@ const Cart = () => {
                         className="btn btn-primary px-3 ms-2"
                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
                       >
-                        <i className="fas fa-plus"></i>
+                        <CiSquarePlus />
                       </button>
                     </div>
                     {/* <!-- Quantity --> */}
@@ -160,7 +162,7 @@ const Cart = () => {
                         className="btn btn-primary px-3 me-2"
                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
                       >
-                        <i className="fas fa-minus"></i>
+                        <i className="fas fa-minus"><CiSquareMinus /></i>
                       </button>
 
                       <div className="form-outline">
@@ -181,7 +183,7 @@ const Cart = () => {
                         className="btn btn-primary px-3 ms-2"
                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
                       >
-                        <i className="fas fa-plus"></i>
+                        <i className="fas fa-plus"><CiSquarePlus /></i>
                       </button>
                     </div>
                     {/* <!-- Quantity --> */}
