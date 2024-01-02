@@ -98,7 +98,7 @@ const Cart = () => {
 
                     {/* <!-- Price --> */}
                     <p className="text-start text-md-center">
-                      <strong>$17.99</strong>
+                      <strong>₹17.99</strong>
                     </p>
                     {/* <!-- Price --> */}
                   </div>
@@ -191,7 +191,7 @@ const Cart = () => {
 
                     {/* <!-- Price --> */}
                     <p className="text-start text-md-center">
-                      <strong>$17.99</strong>
+                      <strong>₹17.99</strong>
                     </p>
                     {/* <!-- Price --> */}
                   </div>
@@ -248,7 +248,7 @@ const Cart = () => {
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                     Products
-                    <span>$53.98</span>
+                    <span>₹53.98</span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                     Shipping
@@ -262,7 +262,7 @@ const Cart = () => {
                       </strong>
                     </div>
                     <span>
-                      <strong>$53.98</strong>
+                      <strong>₹53.98</strong>
                     </span>
                   </li>
                 </ul>

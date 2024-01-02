@@ -59,7 +59,7 @@ const Post = ({addToCart}) => {
                           Add to Cart
                         </button>
                       </div>
-                      <small className="text-muted">$19.99</small>
+                      <small className="text-muted">₹19.99</small>
                     </div>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ const Post = ({addToCart}) => {
                           Add to Cart
                         </button>
                       </div>
-                      <small className="text-muted">$19.99</small>
+                      <small className="text-muted">₹19.99</small>
                     </div>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ const Post = ({addToCart}) => {
                           Add to Cart
                         </button>
                       </div>
-                      <small className="text-muted">$19.99</small>
+                      <small className="text-muted">₹19.99</small>
                     </div>
                   </div>
                 </div>
@@ -142,15 +142,15 @@ const Post = ({addToCart}) => {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   Product Name 1
-                  <span className="badge bg-primary float-end">$19.99</span>
+                  <span className="badge bg-primary float-end">₹19.99</span>
                 </li>
                 <li className="list-group-item">
                   Product Name 2
-                  <span className="badge bg-primary float-end">$39.99</span>
+                  <span className="badge bg-primary float-end">₹39.99</span>
                 </li>
                 <li className="list-group-item">
                   <strong>Total</strong>
-                  <span className="badge bg-success float-end">$59.98</span>
+                  <span className="badge bg-success float-end">₹59.98</span>
                 </li>
               </ul>
               <div className="card-body">
