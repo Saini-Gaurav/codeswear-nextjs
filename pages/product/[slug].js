@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { useRouter } from "next/router";
 
-const Post = () => {
+const Post = ({addToCart}) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -53,6 +53,8 @@ const Post = () => {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
+                          onClick={()=>{addToCart(slug, 1, 499, 'Wear the code(X,XL, red)', 'X,XL',
+                          'Red')}}
                         >
                           Add to Cart
                         </button>
@@ -86,6 +88,8 @@ const Post = () => {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
+                          onClick={()=>{addToCart(slug, 1, 499, 'Wear the code(X,XL, red)', 'X,XL',
+                          'Red')}}
                         >
                           Add to Cart
                         </button>
@@ -119,6 +123,8 @@ const Post = () => {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
+                          onClick={()=>{addToCart(slug, 1, 499, 'Wear the code(X,XL, red)', 'X,XL',
+                          'Red')}}
                         >
                           Add to Cart
                         </button>

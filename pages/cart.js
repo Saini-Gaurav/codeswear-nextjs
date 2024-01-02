@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSquareMinus } from "react-icons/ci";
@@ -67,7 +68,7 @@ const Cart = () => {
                     <div className="d-flex mb-4" style={{ maxWidth: '300px' }}>
                       <button
                         className="btn btn-primary px-3 me-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                        onClick="this.parentNode.querySelector('input[type=number]').stepDown()"
                       >
                         <i className="fas fa-minus"><CiSquareMinus /></i>
                       </button>
@@ -88,7 +89,7 @@ const Cart = () => {
 
                       <button
                         className="btn btn-primary px-3 ms-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                        onClick="this.parentNode.querySelector('input[type=number]').stepUp()"
                       >
                         <CiSquarePlus />
                       </button>
@@ -160,7 +161,7 @@ const Cart = () => {
                     <div className="d-flex mb-4" style={{ maxWidth: '300px' }}>
                       <button
                         className="btn btn-primary px-3 me-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                        onClick="this.parentNode.querySelector('input[type=number]').stepDown()"
                       >
                         <i className="fas fa-minus"><CiSquareMinus /></i>
                       </button>
@@ -181,7 +182,7 @@ const Cart = () => {
 
                       <button
                         className="btn btn-primary px-3 ms-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                        onClick="this.parentNode.querySelector('input[type=number]').stepUp()"
                       >
                         <i className="fas fa-plus"><CiSquarePlus /></i>
                       </button>
@@ -265,10 +266,12 @@ const Cart = () => {
                     </span>
                   </li>
                 </ul>
-
+                
+                <Link href='/checkout'>
                 <button type="button" className="btn btn-primary btn-lg btn-block">
                   Go to checkout
                 </button>
+                </Link>
               </div>
             </div>
           </div>

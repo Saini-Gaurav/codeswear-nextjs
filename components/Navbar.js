@@ -11,9 +11,9 @@ const Navbar = () => {
   // };
 
   // const ref = useRef();
-
+ 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3">
       <div className="container-fluid">
         <Link href={"/"} legacyBehavior>
           <a className="navbar-brand" href="#">
