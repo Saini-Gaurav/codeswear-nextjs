@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { FaCartArrowDown } from "react-icons/fa";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+// import { IoIosCloseCircleOutline } from "react-icons/io";
+import { MdAccountCircle } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,7 +12,7 @@ const Navbar = () => {
   // };
 
   // const ref = useRef();
- 
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3">
       <div className="container-fluid">
@@ -103,7 +104,10 @@ const Navbar = () => {
       </div>
 
       {/* Cart Icon */}
-      <div className="cart">
+      <div className="cart d-flex nav-link">
+        <Link href={"/login"}>
+          <MdAccountCircle className="mx-2" />
+        </Link>
         <Link href={"/cart"} legacyBehavior>
           <a className="nav-link" aria-current="page">
             <FaCartArrowDown />
