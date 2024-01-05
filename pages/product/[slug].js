@@ -1,7 +1,10 @@
 import { React, useState } from "react";
 import { useRouter } from "next/router";
+import mongoose from "mongoose";
+import Product from "@/models/Product";
 
-const Post = ({addToCart}) => {
+const Post = ({addToCart, product, variants}) => {
+  console.log(product, variants)
   const router = useRouter();
   const { slug } = router.query;
 
@@ -22,6 +25,9 @@ const Post = ({addToCart}) => {
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
+
+  // const [color, setColor] = useState(product.color); 
+  // const [size, setSize] = useState(product.size);
   return (
     <>
       <div className="container py-4">
@@ -64,7 +70,7 @@ const Post = ({addToCart}) => {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <div className="card h-100">
                   <img
                     src="https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/81GFLtGfAnL._SX569_.jpg"
@@ -133,7 +139,7 @@ const Post = ({addToCart}) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-md-4">
@@ -177,5 +183,27 @@ const Post = ({addToCart}) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+  let product = await Product.findOne({slug: context.query.slug});
+  let variants = await Product.find({tittle: Product.title})
+  let colourSizeSlug = {}
+
+  for(let item of variants){
+    if(Object.keys(colourSizeSlug).includes(item.color)){
+      colourSizeSlug[item.color][item.size] = {slug: item.slug}
+    }
+    else {
+      colourSizeSlug[item.color] = {};
+      colourSizeSlug[item.color][item.size] = {slug: item.slug}
+    }
+  }
+  return {
+    props: {product: JSON.parse(JSON.stringify(product)) , variants: JSON.parse(JSON.stringify(colourSizeSlug)) },
+  };
+}
 
 export default Post;
