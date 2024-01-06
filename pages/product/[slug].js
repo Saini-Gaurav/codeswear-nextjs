@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import mongoose from "mongoose";
 import Product from "@/models/Product";
 
-const Post = ({addToCart, product, variants}) => {
-  console.log(product, variants)
+const Post = ({buyNow, addToCart, product, variants}) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -25,6 +24,7 @@ const Post = ({addToCart, product, variants}) => {
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
+
 
   // const [color, setColor] = useState(product.color); 
   // const [size, setSize] = useState(product.size);
@@ -48,19 +48,36 @@ const Post = ({addToCart, product, variants}) => {
                       Some quick example text to build on the card title and
                       make up the bulk of the card's content.
                     </p>
+                    {/* <div className="card-text">
+                      {products[item].color.includes("red") && Object.keys(variants['red']).includes(size) &&
+                        (<button className="btn btn-danger rounded-circle p-2"></button>)
+                      }
+                      {products[item].color.includes("green") && Object.keys(variants['green']).includes(size) &&
+                        (<button className="btn btn-success rounded-circle p-2"></button>)
+                      }
+                      {products[item].color.includes("yellow") && Object.keys(variants['yellow']).includes(size) &&
+                        (<button className="btn btn-warning rounded-circle p-2"></button>)
+                      }
+                      {products[item].color.includes("blue") && Object.keys(variants['blue']).includes(size) &&
+                        (<button className="btn btn-primary rounded-circle p-2"></button>)
+                      }
+                      {products[item].color.includes("black") && Object.keys(variants['black']).includes(size) &&
+                        (<button className="btn btn-dark rounded-circle p-2"></button>)
+                      }
+                    </div> */}
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="btn-group">
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
+                          onClick={()=>{buyNow(slug, 1, 499, product.title,size,color)}}
                         >
-                          View
+                          Buy Now
                         </button>
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
-                          onClick={()=>{addToCart(slug, 1, 499, 'Wear the code(X,XL, red)', 'X,XL',
-                          'Red')}}
+                          onClick={()=>{addToCart(slug, 1, 499, product.title,size,color)}}
                         >
                           Add to Cart
                         </button>
@@ -142,7 +159,7 @@ const Post = ({addToCart, product, variants}) => {
               </div> */}
             </div>
           </div>
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <div className="card">
               <div className="card-header">Cart Summary</div>
               <ul className="list-group list-group-flush">
@@ -165,8 +182,8 @@ const Post = ({addToCart, product, variants}) => {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
+            </div> */}
+        </div> 
         <div className="mt-4">
           <input onChange={onChangePin} placeholder = "Enter your pincode" type="text" />
           <button className="mx-2 px-4" onClick={checkServiceability}>

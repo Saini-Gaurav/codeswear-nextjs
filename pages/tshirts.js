@@ -43,19 +43,19 @@ const Tshirts = ({ products }) => {
                       )}
                     </div>
                     <div className="card-text">
-                      {products[item].color.includes("red") && Object.keys(variants['red']).includes(size) &&
+                      {products[item].color.includes("red") &&
                         (<button className="btn btn-danger rounded-circle p-2"></button>)
                       }
-                      {products[item].color.includes("green") && Object.keys(variants['green']).includes(size) &&
+                      {products[item].color.includes("green") &&
                         (<button className="btn btn-success rounded-circle p-2"></button>)
                       }
-                      {products[item].color.includes("yellow") && Object.keys(variants['yellow']).includes(size) &&
+                      {products[item].color.includes("yellow")  &&
                         (<button className="btn btn-warning rounded-circle p-2"></button>)
                       }
-                      {products[item].color.includes("blue") && Object.keys(variants['blue']).includes(size) &&
+                      {products[item].color.includes("blue")  &&
                         (<button className="btn btn-primary rounded-circle p-2"></button>)
                       }
-                      {products[item].color.includes("black") && Object.keys(variants['black']).includes(size) &&
+                      {products[item].color.includes("black")  &&
                         (<button className="btn btn-dark rounded-circle p-2"></button>)
                       }
                     </div>
