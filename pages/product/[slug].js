@@ -2,8 +2,10 @@ import { React, useState } from "react";
 import { useRouter } from "next/router";
 import mongoose from "mongoose";
 import Product from "@/models/Product";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Post = ({buyNow, addToCart, product, variants}) => {
+const Post = ({ buyNow, addToCart, product, variants }) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -15,22 +17,53 @@ const Post = ({buyNow, addToCart, product, variants}) => {
     let pinJson = await pins.json();
     if (pinJson.includes(parseInt(pin))) {
       setService(true);
+      toast.success("Your Pincode is servicable", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       setService(false);
+      toast.error('Sorry, Pincode not serviceable', {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
-    console.log(service)
+    console.log(service);
   };
 
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
 
-
-  // const [color, setColor] = useState(product.color); 
+  // const [color, setColor] = useState(product.color);
   // const [size, setSize] = useState(product.size);
   return (
     <>
       <div className="container py-4">
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="row">
           <div className="col-md-8">
             <h2 className="mb-4">Our Products</h2>
@@ -70,14 +103,18 @@ const Post = ({buyNow, addToCart, product, variants}) => {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
-                          onClick={()=>{buyNow(slug, 1, 499, product.title,size,color)}}
+                          onClick={() => {
+                            buyNow(slug, 1, 499, product.title, size, color);
+                          }}
                         >
                           Buy Now
                         </button>
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
-                          onClick={()=>{addToCart(slug, 1, 499, product.title,size,color)}}
+                          onClick={() => {
+                            addToCart(slug, 1, 499, product.title, size, color);
+                          }}
                         >
                           Add to Cart
                         </button>
@@ -183,19 +220,23 @@ const Post = ({buyNow, addToCart, product, variants}) => {
               </div>
             </div>
             </div> */}
-        </div> 
+        </div>
         <div className="mt-4">
-          <input onChange={onChangePin} placeholder = "Enter your pincode" type="text" />
+          <input
+            onChange={onChangePin}
+            placeholder="Enter your pincode"
+            type="text"
+          />
           <button className="mx-2 px-4" onClick={checkServiceability}>
             Check
           </button>
         </div>
-        {(!service && service != null) && 
+        {!service && service != null && (
           <div>Sorry! We do not deliver to this pincode yet</div>
-        }
-        {(service && service != null) && 
+        )}
+        {service && service != null && (
           <div>Yay! We deliver to this pincode</div>
-        }
+        )}
       </div>
     </>
   );
@@ -205,21 +246,23 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  let product = await Product.findOne({slug: context.query.slug});
-  let variants = await Product.find({tittle: Product.title})
-  let colourSizeSlug = {}
+  let product = await Product.findOne({ slug: context.query.slug });
+  let variants = await Product.find({ tittle: Product.title });
+  let colourSizeSlug = {};
 
-  for(let item of variants){
-    if(Object.keys(colourSizeSlug).includes(item.color)){
-      colourSizeSlug[item.color][item.size] = {slug: item.slug}
-    }
-    else {
+  for (let item of variants) {
+    if (Object.keys(colourSizeSlug).includes(item.color)) {
+      colourSizeSlug[item.color][item.size] = { slug: item.slug };
+    } else {
       colourSizeSlug[item.color] = {};
-      colourSizeSlug[item.color][item.size] = {slug: item.slug}
+      colourSizeSlug[item.color][item.size] = { slug: item.slug };
     }
   }
   return {
-    props: {product: JSON.parse(JSON.stringify(product)) , variants: JSON.parse(JSON.stringify(colourSizeSlug)) },
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      variants: JSON.parse(JSON.stringify(colourSizeSlug)),
+    },
   };
 }
 
