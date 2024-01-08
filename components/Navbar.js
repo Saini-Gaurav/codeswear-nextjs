@@ -1,17 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FaCartArrowDown } from "react-icons/fa";
 // import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdAccountCircle } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 
-const Navbar = () => {
+const Navbar = ({ logout, user }) => {
   // const toggleCart = () => {
   //   const cartRef = ref.current;
   //   cartRef.classList.toggle("cart-open");
   // };
 
   // const ref = useRef();
+  const [dropdown, setDropdown] = useState(false);
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3">
@@ -105,9 +106,34 @@ const Navbar = () => {
 
       {/* Cart Icon */}
       <div className="cart d-flex nav-link">
-        <Link href={"/login"}>
-          <MdAccountCircle className="mx-2" />
-        </Link>
+        <a
+          onMouseOver={() => setDropdown(true)}
+          onMouseLeave={() => setDropdown(false)}
+        >
+          {dropdown && (
+            <div
+              onMouseOver={() => setDropdown(true)}
+              onMouseLeave={() => setDropdown(false)}
+              className="position-absolute end-0 bg-danger mr-4 mt-4 p-2 w-40 "
+            >
+              <ul className="list-unstyled">
+                <a>
+                  <li className="text-white">My Account</li>
+                </a>
+                <a><li className="text-white">Orders</li></a>
+                <li onClick={logout} className="text-white">Log Out</li>
+              </ul>
+            </div>
+          )}
+          {user.value && <MdAccountCircle className="mx-2" />}
+        </a>
+        {!user.value && (
+          <Link href={"/login"} legacyBehavior>
+            <a>
+              <button className="m-1 p-1">Login</button>
+            </a>
+          </Link>
+        )}
         <Link href={"/cart"} legacyBehavior>
           <a className="nav-link" aria-current="page">
             <FaCartArrowDown />
