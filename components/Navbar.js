@@ -117,11 +117,23 @@ const Navbar = ({ logout, user }) => {
               className="position-absolute end-0 bg-danger mr-4 mt-4 p-2 w-40 "
             >
               <ul className="list-unstyled">
-                <a>
-                  <li className="text-white">My Account</li>
-                </a>
-                <a><li className="text-white">Orders</li></a>
-                <li onClick={logout} className="text-white">Log Out</li>
+                <Link href={"/myaccount"} legacyBehavior>
+                  <a className="text-decoration-none">
+                    <li className="text-white">My Account</li>
+                  </a>
+                </Link>
+                <Link href={"/orders"} legacyBehavior>
+                  <a className="text-decoration-none">
+                    <li className="text-white">Orders</li>
+                  </a>
+                </Link>
+                <Link href={""} legacyBehavior>
+                  <a className="text-decoration-none">
+                    <li onClick={logout} className="text-white">
+                      Log Out
+                    </li>
+                  </a>
+                </Link>
               </ul>
             </div>
           )}
