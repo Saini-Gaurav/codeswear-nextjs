@@ -106,7 +106,7 @@ const Navbar = ({ logout, user }) => {
 
       {/* Cart Icon */}
       <div className="cart d-flex nav-link">
-        <a
+        <span
           onMouseOver={() => setDropdown(true)}
           onMouseLeave={() => setDropdown(false)}
         >
@@ -138,7 +138,7 @@ const Navbar = ({ logout, user }) => {
             </div>
           )}
           {user.value && <MdAccountCircle className="mx-2" />}
-        </a>
+        </span>
         {!user.value && (
           <Link href={"/login"} legacyBehavior>
             <a>
