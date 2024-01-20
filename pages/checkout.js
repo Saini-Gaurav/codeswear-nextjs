@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Script from "next/script";
 
-const Checkout = ({ cart, subTotal }) => {
+const Checkout = ({ cart, clearCart, subTotal }) => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
@@ -11,8 +11,31 @@ const Checkout = ({ cart, subTotal }) => {
   const [city, setCity] = useState();
   const [state, setState] = useState();
   const [disable, setDisable] = useState(true);
+  const [user, setUser] = useState({ value: null });
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("myuser"));
+    if (user && user.token) {
+      setUser(user);
+      setEmail(user.email);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      name &&
+      email &&
+      phone &&
+      address &&
+      pincode
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [name, email, phone, address, pincode]);
+
+  const handleChange = async (e) => {
     if (e.target.name == "name") {
       setName(e.target.value);
     } else if (e.target.name == "email") {
@@ -23,6 +46,20 @@ const Checkout = ({ cart, subTotal }) => {
       setAddress(e.target.value);
     } else if (e.target.name == "pincode") {
       setPincode(e.target.value);
+      if (e.target.value.length == 6) {
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+        let pinJson = await pins.json();
+        if (Object.keys(pinJson).includes(e.target.value)) {
+          setState(pinJson[e.target.value][1]);
+          setCity(pinJson[e.target.value][0]);
+        } else {
+          setState("");
+          setCity("");
+        }
+      } else {
+        setState("");
+        setCity("");
+      }
     }
     setTimeout(() => {
       if (name && email && phone && address && pincode) {
@@ -35,7 +72,16 @@ const Checkout = ({ cart, subTotal }) => {
   const initiatePayment = async () => {
     let oid = Math.floor(Math.random() * Date.now());
     //Get a transaction token
-    const data = { cart, subTotal, oid, email: email, name, address, pincode, phone };
+    const data = {
+      cart,
+      subTotal,
+      oid,
+      email: email,
+      name,
+      address,
+      pincode,
+      phone,
+    };
     try {
       let a = await fetch(
         `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
@@ -50,6 +96,7 @@ const Checkout = ({ cart, subTotal }) => {
 
       let txnRes = await a.json();
       console.log(txnRes);
+      // if(txnRes.success){ //-- Pending
       let txnToken = txnRes.txnToken;
     } catch (error) {
       console.error("Error:", error);
@@ -82,6 +129,13 @@ const Checkout = ({ cart, subTotal }) => {
       .catch(function onError(error) {
         console.log("error => ", error);
       });
+    // }
+    // else {
+    //   console.log(txnRes.error)
+    //   if(txnRes.cartClear){
+    //   clearCart();
+    // }
+    // }
   };
   return (
     <div className="container p-4">
@@ -117,13 +171,23 @@ const Checkout = ({ cart, subTotal }) => {
           <label htmlFor="email" className="form-label">
             Email
           </label>
-          <input
-            onChange={handleChange}
-            value={email}
-            type="email"
-            className="form-control"
-            id="email"
-          />
+          {user && user.token ? (
+            <input
+              value={user.email}
+              type="email"
+              className="form-control"
+              id="email"
+              readOnly
+            />
+          ) : (
+            <input
+              onChange={handleChange}
+              value={email}
+              type="email"
+              className="form-control"
+              id="email"
+            />
+          )}
         </div>
         <div className="col-12">
           <label htmlFor="inputAddress" className="form-label">
@@ -166,23 +230,23 @@ const Checkout = ({ cart, subTotal }) => {
             State
           </label>
           <input
+            onChange={handleChange}
             value={state}
             type="text"
             className="form-control"
             id="inputCity"
-            readOnly={true}
           />
         </div>
         <div className="col-md-4">
           <label htmlFor="inputState" className="form-label">
-            City
+            Distric
           </label>
           <input
+            onChange={handleChange}
             value={city}
             type="text"
             id="inputCity"
             className="form-control"
-            readOnly={true}
           />
         </div>
         <div className="col-md-2">

@@ -1,55 +1,62 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import mongoose from "mongoose";
-import Order from "@/models/Order";
+import Link from "next/link";
+// import mongoose from "mongoose";
+// import Order from "@/models/Order";
 
 const Orders = () => {
   const router = useRouter();
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    const fetchOrders = async () => {
+      try {
+        let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: JSON.parse(localStorage.getItem("myuser")).token }),
+        });
+
+        let res = await a.json();
+        setOrders(res.orders);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    if (!localStorage.getItem("myuser")) {
       router.push("/");
+    } else {
+      fetchOrders();
     }
   }, [router.query]);
   return (
     <div className="m-2 p-2">
       <h2>My Orders</h2>
-      <div class="table-responsive">
-        <table class="table">
+      <div className="table-responsive">
+        <table className="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
+              <th scope="col">#Order Id</th>
+              <th scope="col">Email</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Details</th>
+              {/* <th scope="col">Heading</th> */}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
+            {orders.map((item) => {
+              return (
+                <tr key={item._id}>
+                  <th scope="row">{item.orderId}</th>
+                  <td>{item.email}</td>
+                  <td>{item.amount}</td>
+                  <td><Link href={'/order?id=' + item._id} legacyBehavior><a>Details</a></Link></td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -57,15 +64,15 @@ const Orders = () => {
   );
 };
 
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
-  }
-  let orders = await Order.find({});
+// export async function getServerSideProps(context) {
+//   if (!mongoose.connections[0].readyState) {
+//     await mongoose.connect(process.env.MONGO_URI);
+//   }
+//   let orders = await Order.find({});
 
-  return {
-    props: { orders: orders },
-  };
-}
+//   return {
+//     props: { orders: orders },
+//   };
+// }
 
 export default Orders;

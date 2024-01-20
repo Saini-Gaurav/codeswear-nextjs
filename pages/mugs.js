@@ -12,7 +12,7 @@ const Mugs = ({ products }) => {
           return (
             <div key={item._id} className="col-sm-3 pt-4 pb-4">
               <Link
-                passHref={true}
+                // passHref={true}
                 href={`/product/${item.slug}`}
                 className="text-decoration-none"
               >

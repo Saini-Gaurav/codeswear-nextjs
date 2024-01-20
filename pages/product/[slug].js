@@ -1,11 +1,12 @@
 import { React, useState } from "react";
 import { useRouter } from "next/router";
+import Error from 'next/error'
 import mongoose from "mongoose";
 import Product from "@/models/Product";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Post = ({ buyNow, addToCart, product, variants }) => {
+const Post = ({ buyNow, addToCart, product, error , products}) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -15,7 +16,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
   const checkServiceability = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinJson = await pins.json();
-    if (pinJson.includes(parseInt(pin))) {
+    if (Object.keys(pinJson).includes(pin)) {
       setService(true);
       toast.success("Your Pincode is servicable", {
         position: "bottom-center",
@@ -29,7 +30,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
       });
     } else {
       setService(false);
-      toast.error('Sorry, Pincode not serviceable', {
+      toast.error("Sorry, Pincode not serviceable", {
         position: "bottom-center",
         autoClose: 2000,
         hideProgressBar: false,
@@ -38,7 +39,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
     console.log(service);
   };
@@ -46,6 +47,10 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
+
+  // if (error == 404) {
+  //   return <Error statusCode={404} />
+  // }
 
   // const [color, setColor] = useState(product.color);
   // const [size, setSize] = useState(product.size);
@@ -71,7 +76,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
               <div className="col">
                 <div className="card h-100">
                   <img
-                    src="https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/81GFLtGfAnL._SX569_.jpg"
+                    src="https://m.media-amazon.com/images/W/MEDIAX_792452-T1/images/I/71yfuOrfnBL._AC_UL320_.jpg"
                     className="card-img-top"
                     alt="Product Image"
                   />
@@ -99,27 +104,32 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
                       }
                     </div> */}
                     <div className="d-flex justify-content-between align-items-center">
-                      <div className="btn-group">
+                      <div className="">
                         <button
+                          // disabled={product.availableQty <= 0}
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
                           onClick={() => {
-                            buyNow(slug, 1, 499, product.title, size, color);
+                            buyNow(slug, product.qty, product.price, product.title, product.size, product.variants);
                           }}
                         >
+                          {console.log("Buy Now")}
                           Buy Now
                         </button>
                         <button
+                          // disabled={product.availableQty <= 0}
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
                           onClick={() => {
-                            addToCart(slug, 1, 499, product.title, size, color);
+                            addToCart(slug, product.qty, product.price, product.title, product.size, product.variants);
                           }}
                         >
+                          {console.log("Item has been added")}
                           Add to Cart
                         </button>
                       </div>
-                      <small className="text-muted">₹19.99</small>
+                      {/* {product.availableQty > 0 && <small className="text-muted">₹{product.price}</small>} */}
+                      {/* {product.availableQty <= 0 && <small className="text-muted">Out of Stock</small>} */}
                     </div>
                   </div>
                 </div>
@@ -226,6 +236,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
             onChange={onChangePin}
             placeholder="Enter your pincode"
             type="text"
+            id="pincode"
           />
           <button className="mx-2 px-4" onClick={checkServiceability}>
             Check
@@ -243,11 +254,22 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
 };
 
 export async function getServerSideProps(context) {
+  let error = null;
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug });
-  let variants = await Product.find({ tittle: Product.title, category: Product.category});
+  if(product == null){
+    return {
+      props: {
+        error: 404  
+      },
+  }
+}
+  let variants = await Product.find({
+    tittle: Product.title,
+    category: Product.category,
+  });
   let colourSizeSlug = {};
 
   for (let item of variants) {
@@ -260,6 +282,7 @@ export async function getServerSideProps(context) {
   }
   return {
     props: {
+      error: error,
       product: JSON.parse(JSON.stringify(product)),
       variants: JSON.parse(JSON.stringify(colourSizeSlug)),
     },

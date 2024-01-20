@@ -3,7 +3,7 @@ import React from "react";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSquareMinus } from "react-icons/ci";
 
-const Cart = () => {
+const Cart = ({addToCart, removeFromCart, cart}) => {
   return (
     <section className="h-100 gradient-custom">
       <div className="container py-5">
@@ -68,7 +68,7 @@ const Cart = () => {
                     <div className="d-flex mb-4" style={{ maxWidth: '300px' }}>
                       <button
                         className="btn btn-primary px-3 me-2"
-                        onClick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                        onClick={removeFromCart}
                       >
                         <i className="fas fa-minus"><CiSquareMinus /></i>
                       </button>
@@ -82,14 +82,14 @@ const Cart = () => {
                           type="number"
                           className="form-control"
                         />
-                        <label className="form-label" for="form1">
+                        <label className="form-label" htmlFor="form1">
                           Quantity
                         </label>
                       </div>
 
                       <button
                         className="btn btn-primary px-3 ms-2"
-                        onClick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                        onClick= {addToCart}
                       >
                         <CiSquarePlus />
                       </button>
@@ -168,7 +168,7 @@ const Cart = () => {
 
                       <div className="form-outline">
                         <input
-                          id="form1"
+                          id="form-1"
                           min="0"
                           name="quantity"
                           value="1"
@@ -268,7 +268,7 @@ const Cart = () => {
                 </ul>
                 
                 <Link href='/checkout'>
-                <button type="button" className="btn btn-primary btn-lg btn-block">
+                <button disabled={Object.keys(cart).length === 0} type="button" className="btn btn-primary btn-lg btn-block">
                   Go to checkout
                 </button>
                 </Link>

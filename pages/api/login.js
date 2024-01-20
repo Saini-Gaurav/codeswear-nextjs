@@ -14,7 +14,7 @@ const handler = async (req, res) => {
             {success: true, email: user.email, password: user.password },
             process.env.JWT_SECRET
           );
-          res.status(200).json({ success: true, token });
+          res.status(200).json({ success: true, token, email: user.email });
       } else {
         res.status(200).json({ success: false, error: "Invalid Credentials" });
       }
