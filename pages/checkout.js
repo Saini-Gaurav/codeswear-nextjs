@@ -14,10 +14,10 @@ const Checkout = ({ cart, clearCart, subTotal }) => {
   const [user, setUser] = useState({ value: null });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("myuser"));
-    if (user && user.token) {
-      setUser(user);
-      setEmail(user.email);
+    const myuser = JSON.parse(localStorage.getItem("myuser"));
+    if (myuser && myuser.token) {
+      setUser(myuser);
+      setEmail(myuser.email);
     }
   }, []);
 

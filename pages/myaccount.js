@@ -7,11 +7,12 @@ const MyAccount = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState();
   const [pincode, setPincode] = useState();
   const [user, setUser] = useState({ value: null });
   const [password, setPassword] = useState();
   const [cpassword, setCpassword] = useState();
+  const [npassword, setNpassword] = useState();
 
   const router = useRouter();
   useEffect(() => {
@@ -79,7 +80,9 @@ const MyAccount = () => {
   };
 
   const handlePasswordSubmit = async () => {
-    let data = { token: user.token, password, cpassword };
+    let res;
+    if(npassword == cpassword){}
+    let data = { token: user.token, password, cpassword, npassword };
     try {
       let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatepassword`, {
         method: "POST", // or 'PUT'
@@ -89,8 +92,8 @@ const MyAccount = () => {
         body: JSON.stringify(data),
       });
 
-      let res = await a.json();
-      // console.log(res);
+      res = await a.json();
+      console.log(data);
       if(res.success){
       toast.success("Successfully Updated Password", {
         position: "top-left",
@@ -116,24 +119,30 @@ const MyAccount = () => {
       });
 
     }
-    } catch (error) {
+    setPassword('');
+    setCpassword('');
+    setNpassword('');
+    } 
+   catch (error) {
       console.error("Error:", error);
     }
   };
 
   const handleChange = async (e) => {
-    if (e.target.name == "name") {
+    if (e.target.name === "name") {
       setName(e.target.value);
-    } else if (e.target.name == "phone") {
+    } else if (e.target.name === "phone") {
       setPhone(e.target.value);
-    } else if (e.target.name == "address") {
+    } else if (e.target.name === "address") {
       setAddress(e.target.value);
-    } else if (e.target.name == "pincode") {
+    } else if (e.target.name === "pincode") {
       setPincode(e.target.value);
-    } else if (e.target.name == "password") {
+    } else if (e.target.name === "password") {
       setPassword(e.target.value);
-    } else if (e.target.name == "cpassword") {
+    } else if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
+    } else if (e.target.name === "npassword") {
+      setNpassword(e.target.value);
     }
   };
   return (
@@ -164,6 +173,7 @@ const MyAccount = () => {
             type="text"
             className="form-control"
             id="name"
+            name="name"
           />
         </div>
         <div className="col-md-6">
@@ -199,6 +209,7 @@ const MyAccount = () => {
             className="form-control"
             id="inputAddress"
             placeholder="1234 Main St"
+            name="address"
           />
         </div>
         <div className="col-12">
@@ -222,10 +233,11 @@ const MyAccount = () => {
             type="phone"
             className="form-control"
             id="phone"
+            name="phone"
           />
         </div>
         <div className="col-md-2">
-          <label htmlFor="inputZip" className="form-label">
+          <label htmlFor="pincode" className="form-label">
             Zip
           </label>
           <input
@@ -233,7 +245,8 @@ const MyAccount = () => {
             value={pincode}
             type="text"
             className="form-control"
-            id="inputZip"
+            id="pincode"
+            name="pincode"
           />
         </div>
       </form>
@@ -246,7 +259,7 @@ const MyAccount = () => {
       </button>
       <h4>2. Change Password</h4>
       <form className="row g-3">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <label htmlFor="password" className="form-label">
             Password
           </label>
@@ -256,9 +269,10 @@ const MyAccount = () => {
             type="password"
             className="form-control"
             id="password"
+            name="password"
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
           <label htmlFor="cpassword" className="form-label">
             Confirm Password
           </label>
@@ -268,6 +282,20 @@ const MyAccount = () => {
             type="password"
             className="form-control"
             id="cpassword"
+            name="cpassword"
+          />
+        </div>
+        <div className="col-md-4">
+          <label htmlFor="npassword" className="form-label">
+            New Password
+          </label>
+          <input
+            onChange={handleChange}
+            value={npassword}
+            type="password"
+            className="form-control"
+            id="npassword"
+            name="npassword"
           />
         </div>
       </form>
