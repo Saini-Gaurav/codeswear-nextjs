@@ -56,6 +56,7 @@ export default function App({ Component, pageProps }) {
     }
     setCart(newCart);
     saveCart(newCart);
+    console.log("Cart has been added")
   };
 
   const clearCart = () => {
@@ -74,6 +75,7 @@ export default function App({ Component, pageProps }) {
     }
     setCart(newCart);
     saveCart(newCart);
+    console.log("Cart has been removed")
   };
 
   const buyNow = (itemCode, qty, price, name, size, variant) => {

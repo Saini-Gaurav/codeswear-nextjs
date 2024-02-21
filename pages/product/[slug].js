@@ -113,7 +113,6 @@ const Post = ({ buyNow, addToCart, product, error , products}) => {
                             buyNow(slug, product.qty, product.price, product.title, product.size, product.variants);
                           }}
                         >
-                          {console.log("Buy Now")}
                           Buy Now
                         </button>
                         <button
@@ -124,7 +123,6 @@ const Post = ({ buyNow, addToCart, product, error , products}) => {
                             addToCart(slug, product.qty, product.price, product.title, product.size, product.variants);
                           }}
                         >
-                          {console.log("Item has been added")}
                           Add to Cart
                         </button>
                       </div>
